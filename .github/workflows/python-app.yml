@@ -25,6 +25,22 @@ jobs:
         pip install pytest tqdm matplotlib numpy torchsummary
         pip install -e .
         
-    - name: Run tests
+    - name: Run pre-training tests
       run: |
-        python -m pytest tests/ 
+        python -m pytest tests/test_model_structure.py
+        
+    - name: Train model
+      run: |
+        python train.py
+        
+    - name: Run post-training tests
+      run: |
+        python -m pytest tests/test_model_performance.py
+        
+    - name: Upload training artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: training-results
+        path: |
+          images/
+          logs/

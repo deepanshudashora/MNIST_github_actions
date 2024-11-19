@@ -1,7 +1,7 @@
 import torch
 import pytest
-from ..model import Net
-from ..utils import get_device, data_transformation
+from src.model import Net
+from src.utils import get_device, data_transformation
 from torchvision import datasets
 import torch.nn.functional as F
 

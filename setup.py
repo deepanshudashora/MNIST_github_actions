@@ -10,5 +10,6 @@ setup(
         'tqdm',
         'matplotlib',
         'numpy',
+        'torchsummary'
     ],
 ) 

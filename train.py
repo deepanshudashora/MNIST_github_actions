@@ -3,11 +3,13 @@ import torch
 import torch.optim as optim
 from torchvision import datasets
 from torchsummary import summary
-from model import Net
-from utils import data_transformation,get_device, \
+from src.model import Net
+from src.utils import data_transformation, get_device, \
                   fit_model, plot_accuracy_report, \
                   show_random_results, plot_misclassified, \
                   calculate_accuracy_per_class
+import os
+import json
 
 # CUDA?
 device = get_device()
@@ -46,3 +48,23 @@ grid_size = (4,4)
 plot_misclassified(model,grid_size,test_loader,device)
 
 calculate_accuracy_per_class(model,device,test_loader,test_data)
+
+def save_metrics(train_losses, test_losses, train_acc, test_acc):
+    metrics = {
+        'train_loss': train_losses,
+        'test_loss': test_losses,
+        'train_accuracy': train_acc,
+        'test_accuracy': test_acc
+    }
+    os.makedirs('logs', exist_ok=True)
+    with open('logs/metrics.json', 'w') as f:
+        json.dump(metrics, f)
+
+def save_class_accuracy(class_accuracies):
+    with open('logs/class_accuracy.json', 'w') as f:
+        json.dump(class_accuracies, f)
+
+save_metrics(train_losses, test_losses, train_acc, test_acc)
+torch.save(model.state_dict(), 'model.pth')
+
+save_class_accuracy(final_output)
