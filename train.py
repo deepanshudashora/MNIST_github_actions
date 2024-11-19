@@ -2,7 +2,6 @@
 import torch
 import torch.optim as optim
 from torchvision import datasets
-from torchsummary import summary
 from model import Net
 from utils import data_transformation, get_device, \
                   fit_model, plot_accuracy_report, \
@@ -34,28 +33,44 @@ train_loader = torch.utils.data.DataLoader(train_data, **dataloader_kwargs)
 test_loader = torch.utils.data.DataLoader(test_data, **dataloader_kwargs)
 
 model = Net().to(device)
-print(summary(model, input_size=(1, 28, 28)))
 
-def update_readme_with_model_params(model_summary):
+def count_model_parameters(model):
+    """Count model parameters"""
+    total_params = sum(p.numel() for p in model.parameters())
+    trainable_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
+    non_trainable_params = total_params - trainable_params
+    
+    return {
+        "total_params": total_params,
+        "trainable_params": trainable_params,
+        "non_trainable_params": non_trainable_params,
+        "model_size_mb": sum(p.numel() * p.element_size() for p in model.parameters()) / (1024 * 1024)
+    }
+
+def update_readme_with_model_params(model):
     with open('README.md', 'r') as f:
         readme = f.read()
     
-    # Extract model parameters from summary
-    params = {
-        "total_params": model_summary.total_params,
-        "trainable_params": model_summary.trainable_params,
-        "non_trainable_params": model_summary.non_trainable_params
-    }
+    # Get model parameters
+    params = count_model_parameters(model)
     
     # Update model parameters section
-    params_section = f"```python\n{json.dumps(params, indent=4)}\n```"
+    params_section = f"""<details>
+<summary>Click to expand model parameters</summary>
+
+```python
+{json.dumps(params, indent=4)}
+```
+</details>"""
     readme = readme.replace('```python\n{\n    "total_params": "Loading..."', params_section)
     
     with open('README.md', 'w') as f:
         f.write(readme)
 
-model_summary = summary(model, input_size=(1, 28, 28))
-update_readme_with_model_params(model_summary)
+#model_summary = summary(model, input_size=(1, 28, 28))
+
+# print(type(model_summary))
+update_readme_with_model_params(model)
 
 training_parameters = {"learning_rate":0.01,
                        "momentum":0.9,
