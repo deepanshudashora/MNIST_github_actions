@@ -1,6 +1,6 @@
 import torch
 import pytest
-from src.model import Net
+from model import Net
 
 @pytest.fixture
 def model():

@@ -25,10 +25,6 @@ jobs:
         pip install pytest tqdm matplotlib numpy torchsummary
         pip install -e .
         
-    - name: List directory structure
-      run: |
-        ls -R
-        
     - name: Run pre-training tests
       run: |
         PYTHONPATH=$PYTHONPATH:$(pwd) python -m pytest tests/test_model_structure.py -v

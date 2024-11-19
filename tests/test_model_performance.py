@@ -2,7 +2,7 @@ import torch
 import pytest
 import json
 import os
-from src.model import Net
+from model import Net
 
 @pytest.fixture
 def model():
