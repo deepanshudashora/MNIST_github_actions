@@ -1,6 +1,6 @@
 # MNIST Model Training
 
-![Build Status](https://github.com/{username}/{repository-name}/workflows/Python%20application/badge.svg)
+![Build Status](https://github.com/deepanshudashora/MNIST_github_actions/actions/workflows/python-app.yml/badge.svg)
 
 - [Problem Statement](#Problem-Statement)
 - [File Structure](#File-Structure)
@@ -11,6 +11,9 @@
   * [Sample Output](#Sample-Output)
   * [Misclassified Images](#Misclassified-Images)
   * [Accuracy Report for Each class](#Accuracy-Report-for-Each-class)
+
+# Problem Statement
+Training a CNN model on MNIST dataset with GitHub Actions integration for automated testing and deployment.
 
 # File Structure
 * model.py - Contains Model Architecture
@@ -24,4 +27,43 @@
 <details>
 <summary>Click to expand model parameters</summary>
 
+```python
+{
+    "total_params": "Loading...",
+    "trainable_params": "Loading...",
+    "non_trainable_params": "Loading...",
+    "model_size_mb": "Loading..."
+}
+```
+</details>
+
+# Training Logs
+<details>
+<summary>Click to expand training logs</summary>
+
+```
+Loading training logs...
+```
+</details>
+
+# Results
+
+## Accuracy Plot
+![Accuracy and Loss Plots](images/accuracy_plot.png)
+
+## Sample Output
+![Sample Predictions](images/prediction.png)
+
+## Misclassified Images
+![Misclassified Images](images/missclassified.png)
+
+## Accuracy Report for Each class
+![Class-wise Accuracy](images/accuracy_per_class.png)
+
+<details>
+<summary>Click to see detailed class-wise accuracy</summary>
+
+```json
+Loading class-wise accuracy...
+```
 </details>

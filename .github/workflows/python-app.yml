@@ -9,6 +9,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
     steps:
     - uses: actions/checkout@v4
@@ -44,3 +46,11 @@ jobs:
         path: |
           images/
           logs/
+          
+    - name: Commit and push if changed
+      run: |
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+        git config --global user.name "github-actions[bot]"
+        git add README.md images/ logs/
+        git commit -m "Update README and artifacts" || exit 0
+        git push
