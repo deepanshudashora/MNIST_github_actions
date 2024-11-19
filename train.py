@@ -3,8 +3,8 @@ import torch
 import torch.optim as optim
 from torchvision import datasets
 from torchsummary import summary
-from src.model import Net
-from src.utils import data_transformation, get_device, \
+from model import Net
+from utils import data_transformation, get_device, \
                   fit_model, plot_accuracy_report, \
                   show_random_results, plot_misclassified, \
                   calculate_accuracy_per_class
@@ -29,6 +29,27 @@ test_loader = torch.utils.data.DataLoader(test_data, **dataloader_kwargs)
 
 model = Net().to(device)
 print(summary(model, input_size=(1, 28, 28)))
+
+def update_readme_with_model_params(model_summary):
+    with open('README.md', 'r') as f:
+        readme = f.read()
+    
+    # Extract model parameters from summary
+    params = {
+        "total_params": model_summary.total_params,
+        "trainable_params": model_summary.trainable_params,
+        "non_trainable_params": model_summary.non_trainable_params
+    }
+    
+    # Update model parameters section
+    params_section = f"```python\n{json.dumps(params, indent=4)}\n```"
+    readme = readme.replace('```python\n{\n    "total_params": "Loading..."', params_section)
+    
+    with open('README.md', 'w') as f:
+        f.write(readme)
+
+model_summary = summary(model, input_size=(1, 28, 28))
+update_readme_with_model_params(model_summary)
 
 training_parameters = {"learning_rate":0.01,
                        "momentum":0.9,
@@ -68,3 +89,26 @@ save_metrics(train_losses, test_losses, train_acc, test_acc)
 torch.save(model.state_dict(), 'model.pth')
 
 save_class_accuracy(final_output)
+
+def update_readme_with_logs():
+    with open('logs/network.log', 'r') as f:
+        logs = f.read()
+    
+    with open('README.md', 'r') as f:
+        readme = f.read()
+    
+    # Update logs section
+    logs_section = f"```\n{logs}\n```"
+    readme = readme.replace('```\nLoading training logs...\n```', logs_section)
+    
+    # Update class-wise accuracy
+    if os.path.exists('logs/class_accuracy.json'):
+        with open('logs/class_accuracy.json', 'r') as f:
+            class_acc = json.load(f)
+        class_acc_section = f"```json\n{json.dumps(class_acc, indent=4)}\n```"
+        readme = readme.replace('```json\nLoading class-wise accuracy...\n```', class_acc_section)
+    
+    with open('README.md', 'w') as f:
+        f.write(readme)
+
+update_readme_with_logs()
