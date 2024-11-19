@@ -25,17 +25,21 @@ jobs:
         pip install pytest tqdm matplotlib numpy torchsummary
         pip install -e .
         
+    - name: List directory structure
+      run: |
+        ls -R
+        
     - name: Run pre-training tests
       run: |
-        python -m pytest tests/test_model_structure.py
+        PYTHONPATH=$PYTHONPATH:$(pwd) python -m pytest tests/test_model_structure.py -v
         
     - name: Train model
       run: |
-        python train.py
+        PYTHONPATH=$PYTHONPATH:$(pwd) python train.py
         
     - name: Run post-training tests
       run: |
-        python -m pytest tests/test_model_performance.py
+        PYTHONPATH=$PYTHONPATH:$(pwd) python -m pytest tests/test_model_performance.py -v
         
     - name: Upload training artifacts
       uses: actions/upload-artifact@v4
