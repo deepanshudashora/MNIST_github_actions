@@ -117,16 +117,29 @@ def fit_model(model,training_parameters,train_loader,test_loader,device):
     test_acc = []
 
     optimizer = optim.SGD(model.parameters(), lr=training_parameters["learning_rate"], momentum=training_parameters["momentum"])
-    scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=training_parameters["step_size"], gamma=training_parameters["gamma"], verbose=True)
-    #scheduler = optim.lr_scheduler.OneCycleLR(optimizer, max_lr=training_parameters["max_lr"], epochs=training_parameters["num_epochs"], steps_per_epoch=len(train_loader),verbose=True)
-    for epoch in range(1, training_parameters["num_epochs"]+1):
-        print(f'Epoch {epoch}')
-        train_losses,train_acc = train(model, device, train_loader, optimizer,train_losses,train_acc)
-        test_losses,test_acc = test(model, device, test_loader,test_losses,test_acc)
+    scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=training_parameters["step_size"], gamma=training_parameters["gamma"])
+    
+    epochs = tqdm(range(1, training_parameters["num_epochs"]+1), desc="Training Progress")
+    for epoch in epochs:
+        train_loss, train_accuracy = train(model, device, train_loader, optimizer)
+        test_loss, test_accuracy = test(model, device, test_loader)
+        
+        train_losses.append(train_loss)
+        test_losses.append(test_loss)
+        train_acc.append(train_accuracy)
+        test_acc.append(test_accuracy)
+        
+        epochs.set_postfix({
+            'Train Loss': f'{train_loss:.4f}',
+            'Test Loss': f'{test_loss:.4f}',
+            'Train Acc': f'{train_accuracy:.2f}%',
+            'Test Acc': f'{test_accuracy:.2f}%'
+        })
+        
         scheduler.step()
         
     logging.info('Training Losses : %s', train_losses)
-    logging.info('Training Acccuracy : %s', train_acc)
+    logging.info('Training Accuracy : %s', train_acc)
     logging.info('Test Losses : %s', test_losses)
     logging.info('Test Accuracy : %s', test_acc)
         
@@ -199,8 +212,10 @@ def calculate_accuracy_per_class(model,device,test_loader,test_data):
     model.eval()
     class_correct = list(0. for i in range(10))
     class_total = list(0. for i in range(10))
+    final_output = {}
+    
     with torch.no_grad():
-        for data in test_loader:
+        for data in tqdm(test_loader, desc="Calculating class accuracies"):
             images, labels = data
             images, labels = images.to(device), labels.to(device)
             outputs = model(images.to(device))
@@ -210,12 +225,11 @@ def calculate_accuracy_per_class(model,device,test_loader,test_data):
                 label = labels[i]
                 class_correct[label] += c[i].item()
                 class_total[label] += 1
-    final_output = {}
+
     classes = test_data.classes
     for i in range(10):
-        print('Accuracy of %5s : %2d %%' % (
-            classes[i], 100 * class_correct[i] / class_total[i]))
-        final_output[classes[i].split("-")[1]] = 100 * class_correct[i] / class_total[i]
+        accuracy = 100 * class_correct[i] / class_total[i]
+        final_output[classes[i].split("-")[1]] = accuracy
         
     original_class = list(final_output.keys())
     class_accuracy = list(final_output.values())
@@ -227,3 +241,5 @@ def calculate_accuracy_per_class(model,device,test_loader,test_data):
     # Save the plot
     plt.savefig('images/accuracy_per_class.png')
     plt.close()
+    
+    return final_output

@@ -89,7 +89,8 @@ show_random_results(test_loader,grid_size,model,device)
 grid_size = (4,4)
 plot_misclassified(model,grid_size,test_loader,device)
 
-calculate_accuracy_per_class(model,device,test_loader,test_data)
+# Get the final_output from calculate_accuracy_per_class
+final_output = calculate_accuracy_per_class(model,device,test_loader,test_data)
 
 def save_metrics(train_losses, test_losses, train_acc, test_acc):
     metrics = {
@@ -106,11 +107,12 @@ def save_class_accuracy(class_accuracies):
     with open('logs/class_accuracy.json', 'w') as f:
         json.dump(class_accuracies, f)
 
+# Save metrics and model
 save_metrics(train_losses, test_losses, train_acc, test_acc)
 torch.save(model.state_dict(), 'model.pth')
-
 save_class_accuracy(final_output)
 
+# Update README
 def update_readme_with_logs():
     with open('logs/network.log', 'r') as f:
         logs = f.read()
@@ -127,7 +129,7 @@ def update_readme_with_logs():
         with open('logs/class_accuracy.json', 'r') as f:
             class_acc = json.load(f)
         class_acc_section = f"```json\n{json.dumps(class_acc, indent=4)}\n```"
-        readme = readme.replace('```json\nLoading class-wise accuracy...\n```', class_acc_section)
+        readme = readme.replace('```\nLoading class-wise accuracy...\n```', class_acc_section)
     
     with open('README.md', 'w') as f:
         f.write(readme)
