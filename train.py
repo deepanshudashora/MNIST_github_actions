@@ -15,7 +15,13 @@ import json
 device = get_device()
 print("Available Device :: ", device)
 
-
+transformation_matrix = {"image_size":(28,28),
+                         "random_rotation_angle":(-5.0, 5.0),
+                         "mean_of_data":(0.1307,),
+                         "std_of_data": (0.3081,),
+                         "center_crop_size": (24,24),
+                         "center_crop_probability" : 0.1,
+                         }
 
 dataloader_kwargs = {'batch_size': 64, 'shuffle': True, 'num_workers': 1, 'pin_memory': True}
 
