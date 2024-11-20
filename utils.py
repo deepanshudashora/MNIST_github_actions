@@ -145,18 +145,62 @@ def fit_model(model,training_parameters,train_loader,test_loader,device):
     return train_losses, test_losses, train_acc, test_acc
 
 def plot_accuracy_report(train_losses, test_losses, train_acc, test_acc):
-    fig, axs = plt.subplots(2,2,figsize=(15,10))
+    # Debugging: print the lengths and samples of data
+    print(f"train_losses length: {len(train_losses)}")
+    print(f"test_losses length: {len(test_losses)}")
+    print(f"train_acc length: {len(train_acc)}")
+    print(f"test_acc length: {len(test_acc)}")
+    
+    # Check that the input lists are not empty
+    if not all([train_losses, test_losses, train_acc, test_acc]):
+        print("Error: One or more input lists are empty.")
+        return
+    
+    if len(train_losses) != len(test_losses) or len(train_losses) != len(train_acc) or len(train_losses) != len(test_acc):
+        print("Error: Input lists have mismatched lengths.")
+        return
+
+    # Create the 'images' directory if it doesn't exist
+    if not os.path.exists('images'):
+        os.makedirs('images')
+
+    # Create subplots
+    fig, axs = plt.subplots(2, 2, figsize=(15, 10))
+    
+    # Plot Training Loss
     axs[0, 0].plot(train_losses)
     axs[0, 0].set_title("Training Loss")
+    axs[0, 0].set_xlabel('Epochs')
+    axs[0, 0].set_ylabel('Loss')
+
+    # Plot Training Accuracy
     axs[1, 0].plot(train_acc)
     axs[1, 0].set_title("Training Accuracy")
+    axs[1, 0].set_xlabel('Epochs')
+    axs[1, 0].set_ylabel('Accuracy')
+
+    # Plot Test Loss
     axs[0, 1].plot(test_losses)
     axs[0, 1].set_title("Test Loss")
+    axs[0, 1].set_xlabel('Epochs')
+    axs[0, 1].set_ylabel('Loss')
+
+    # Plot Test Accuracy
     axs[1, 1].plot(test_acc)
     axs[1, 1].set_title("Test Accuracy")
-    
+    axs[1, 1].set_xlabel('Epochs')
+    axs[1, 1].set_ylabel('Accuracy')
+
+    # Adjust layout to prevent overlap
+    plt.tight_layout()
+
+    # Debugging: Show the plot before saving it
+    plt.show()
+
     # Save the plot
     plt.savefig('images/accuracy_plot.png')
+
+    # Close the plot
     plt.close()
 
 def show_random_results(test_loader,grid_size,model,device):

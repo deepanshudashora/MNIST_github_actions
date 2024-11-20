@@ -7,7 +7,6 @@
 - [Model Parameters](#Model-Parameters)
 - [Training Logs](#Training-Logs)
 - [Results](#Results)
-  * [Accuracy Plot](#Accuracy-Plot)
   * [Sample Output](#Sample-Output)
   * [Misclassified Images](#Misclassified-Images)
   * [Accuracy Report for Each class](#Accuracy-Report-for-Each-class)
@@ -16,12 +15,13 @@
 Training a CNN model on MNIST dataset with GitHub Actions integration for automated testing and deployment.
 
 # File Structure
-* model.py - Contains Model Architecture
-* utils.py - Contains training utilities and helper functions
-* src/ - Source code directory
-* tests/ - Test files directory
-* logs/ - Training logs and metrics
-* images/ - Generated plots and visualizations
+* [model.py](https://github.com/deepanshudashora/MNIST_github_actions/blob/main/model.py) - Contains Model Architecture
+* [utils.py](https://github.com/deepanshudashora/MNIST_github_actions/blob/main/utils.py) - Contains training utilities and helper functions
+* [tests/](https://github.com/deepanshudashora/MNIST_github_actions/tree/main/tests) - Test files directory
+* [images/](https://github.com/deepanshudashora/MNIST_github_actions/tree/main/images) - Generated plots and visualizations
+* [.github/workflows/](https://github.com/deepanshudashora/MNIST_github_actions/tree/main/.github/workflows) - GitHub Actions workflow file
+* [train.ipynb](https://github.com/deepanshudashora/MNIST_github_actions/blob/main/train.ipynb) - DEMO Training of the model
+* [train.py](https://github.com/deepanshudashora/MNIST_github_actions/blob/main/train.py) - Training script for actions
 
 # Model Parameters
 ```python
@@ -83,9 +83,6 @@ Test set: Average loss: 0.0506, Accuracy: 9850/10000 (98.50%)
 ```
 # Results
 
-## Accuracy Plot
-![Accuracy and Loss Plots](images/accuracy_plot.png)
-
 ## Sample Output
 ![Sample Predictions](images/prediction.png)
 
@@ -107,3 +104,9 @@ Test set: Average loss: 0.0506, Accuracy: 9850/10000 (98.50%)
  ' eight': 96.18320610687023,
  ' nine': 97.24137931034483}
 ```
+
+## GitHub Actions Details
+* use [uv](https://astral.sh/blog/uv) instead of pip for faster installation of dependencies
+* run test cases before training the model
+* run test cases after training the model
+
