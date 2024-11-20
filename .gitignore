@@ -1,0 +1,38 @@
+# Python cache files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Logs
+logs/
+*.log
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
+
+# Virtual Environment
+venv/
+env/
+ENV/
+
+# IDE specific files
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Model checkpoints
+*.pth
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Images (optional, comment out if you want to track images)
+# images/
+
+# Test cache
+.pytest_cache/
+.coverage
+htmlcov/
