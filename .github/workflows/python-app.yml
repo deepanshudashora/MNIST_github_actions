@@ -9,8 +9,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
 
     steps:
     - uses: actions/checkout@v4
@@ -22,35 +20,20 @@ jobs:
         
     - name: Install dependencies
       run: |
-        pip install uv
-        uv pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu --system
-        uv pip install pytest tqdm matplotlib numpy torchsummary --system
-        uv pip install -e . --system
+        python -m pip install --upgrade pip
+        pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
+        pip install pytest tqdm matplotlib numpy torchsummary
+        pip install -e .
         
     - name: Run pre-training tests
       run: |
-        PYTHONPATH=$PYTHONPATH:$(pwd) python -m pytest tests/test_model_structure.py -v
+        python -m pytest tests/test_model_structure.py -v
         
     - name: Train model
       run: |
-        PYTHONPATH=$PYTHONPATH:$(pwd) python train.py
+        python train.py
         
     - name: Run post-training tests
       run: |
-        PYTHONPATH=$PYTHONPATH:$(pwd) python -m pytest tests/test_model_performance.py -v
+        python -m pytest tests/test_model_performance.py -v
         
-    - name: Upload training artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: training-results
-        path: |
-          images/
-          logs/
-          
-    - name: Commit and push if changed
-      run: |
-        git config --global user.email "github-actions[bot]@users.noreply.github.com"
-        git config --global user.name "github-actions[bot]"
-        git add README.md images/ logs/
-        git commit -m "Update README and artifacts" || exit 0
-        git push

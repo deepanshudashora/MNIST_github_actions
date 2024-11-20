@@ -29,9 +29,6 @@ ENV/
 # Jupyter Notebook
 .ipynb_checkpoints
 
-# Images (optional, comment out if you want to track images)
-# images/
-
 # Test cache
 .pytest_cache/
 .coverage
