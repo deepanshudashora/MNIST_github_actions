@@ -203,8 +203,8 @@ def plot_accuracy_report(train_losses, test_losses, train_acc, test_acc):
     # Close the plot
     plt.close()
 
-def show_random_results(test_loader,grid_size,model,device):
-    cols, rows = grid_size[0],grid_size[1]
+def show_random_results(test_loader, grid_size, model, device):
+    cols, rows = grid_size[0], grid_size[1]
     figure = plt.figure(figsize=(20, 20))
     for i in range(1, cols * rows + 1):
         k = np.random.randint(0, len(test_loader.dataset))
@@ -213,7 +213,10 @@ def show_random_results(test_loader,grid_size,model,device):
         pred = model(img.to(device))
 
         figure.add_subplot(rows, cols, i)
-        plt.title(f"Predcited label {pred.argmax().item()}\n True Label: {label}")
+        plt.title(
+            f"Predicted Label: {pred.argmax().item()}\nTrue Label: {label}", 
+            fontsize=20  # Increase this value to make the text size larger
+        )
         plt.axis("off")
         plt.imshow(img.squeeze(), cmap="gray")
 
@@ -242,7 +245,7 @@ def plot_misclassified(model,grid_size,test_loader,device):
         img, label, pred = misclf[i-1]
 
         figure.add_subplot(rows, cols, i)
-        plt.title(f"Predcited label {pred}\n True Label: {label}")
+        plt.title(f"Predcited label {pred}\n True Label: {label}",fontsize=20)
         plt.axis("off")
         plt.imshow(img.squeeze(), cmap="gray")
 
