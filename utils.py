@@ -3,7 +3,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
 from torchvision import datasets, transforms
-from tqdm import tqdm
+from tqdm.auto import tqdm
 import matplotlib.pyplot as plt
 import numpy as np
 # Data to plot accuracy and loss graphs
@@ -58,7 +58,7 @@ def GetCorrectPredCount(pPrediction, pLabels):
 
 def train(model, device, train_loader, optimizer):
     model.train()
-    pbar = tqdm(train_loader, position=0, leave=True,desc='Training')
+    pbar = tqdm(train_loader, desc='Training')
     
     train_loss = 0
     correct = 0
@@ -122,7 +122,7 @@ def fit_model(model,training_parameters,train_loader,test_loader,device):
     optimizer = optim.SGD(model.parameters(), lr=training_parameters["learning_rate"], momentum=training_parameters["momentum"])
     scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=training_parameters["step_size"], gamma=training_parameters["gamma"])
     
-    epochs = tqdm(range(1, training_parameters["num_epochs"]+1), desc="Training Progress", position=0, leave=True)
+    epochs = tqdm(range(1, training_parameters["num_epochs"]+1), desc="Training Progress" )
     for epoch in epochs:
         train_loss, train_accuracy = train(model, device, train_loader, optimizer)
         test_loss, test_accuracy = test(model, device, test_loader)
@@ -265,7 +265,7 @@ def calculate_accuracy_per_class(model,device,test_loader,test_data):
     final_output = {}
     
     with torch.no_grad():
-        for data in tqdm(test_loader, desc="Calculating class accuracies", position=0, leave=True):
+        for data in tqdm(test_loader, desc="Calculating class accuracies" ):
             images, labels = data
             images, labels = images.to(device), labels.to(device)
             outputs = model(images.to(device))
