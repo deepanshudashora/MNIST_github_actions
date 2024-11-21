@@ -20,7 +20,7 @@ jobs:
         
     - name: Install dependencies
       run: |
-        pip instal uv
+        pip install uv
         uv pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu --system
         uv pip install pytest tqdm matplotlib numpy torchsummary --system
         uv pip install -e . --system
