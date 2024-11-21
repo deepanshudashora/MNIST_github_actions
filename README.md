@@ -83,9 +83,6 @@ Test set: Average loss: 0.0506, Accuracy: 9850/10000 (98.50%)
 ```
 
 # Data Augmentation
----
-
-## Data Augmentation
 
 ⚠️ **Note**: For visualization purposes, the data augmentation transformations (e.g., angle rotation and center crop) are applied with exaggerated values compared to the actual values used during training. This is done to make the visual differences more noticeable. The original values were too subtle for clear visual representation.
 
