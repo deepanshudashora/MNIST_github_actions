@@ -45,6 +45,10 @@ def data_transformation(transformation_matrix):
         transforms.ToTensor(),
         transforms.Normalize(transformation_matrix["mean_of_data"],transformation_matrix["std_of_data"])
         ])
+    
+    # Save augmentation examples
+    test_data = datasets.MNIST('../data', train=False, download=True, transform=transforms.ToTensor())
+    save_augmentation_examples(train_transforms, test_data)
 
     return train_transforms, test_transforms
 
@@ -289,3 +293,56 @@ def calculate_accuracy_per_class(model,device,test_loader,test_data):
     plt.close()
     
     return final_output
+
+def save_augmentation_examples(train_transforms, test_data, num_examples=5):
+    """
+    Save examples of each augmentation type in a grid
+    Args:
+        train_transforms: transformation pipeline
+        test_data: original dataset
+        num_examples: number of examples per augmentation
+    """
+    plt.figure(figsize=(20, 10))
+    
+    # Get original images
+    original_images = [test_data[i][0] for i in range(num_examples)]
+    
+    # List of individual transforms to visualize
+    transforms_list = [
+        transforms.RandomRotation((-10.0, 10.0), fill=(0,)),
+        transforms.CenterCrop(20),
+        transforms.Normalize((0.1307,), (0.3081,))
+    ]
+    
+    transform_names = ['Original', 'Random Rotation', 'Center Crop', 'Normalized']
+    
+    # Create a grid: num_examples rows, len(transforms_list)+1 columns
+    for idx, img in enumerate(original_images):
+        # Original image
+        plt.subplot(num_examples, len(transform_names), idx*len(transform_names) + 1)
+        plt.imshow(img.squeeze(), cmap='gray')
+        if idx == 0:
+            plt.title('Original', pad=20)
+        plt.axis('off')
+        
+        # Apply each transform
+        for t_idx, transform in enumerate(transforms_list):
+            plt.subplot(num_examples, len(transform_names), idx*len(transform_names) + t_idx + 2)
+            
+            # Apply transform
+            if isinstance(transform, transforms.Normalize):
+                # For normalize, we need to show the effect differently
+                img_normalized = transform(img.clone())
+                img_show = (img_normalized - img_normalized.min()) / (img_normalized.max() - img_normalized.min())
+            else:
+                img_show = transform(img.clone())
+            
+            plt.imshow(img_show.squeeze(), cmap='gray')
+            if idx == 0:
+                plt.title(transform_names[t_idx + 1], pad=20)
+            plt.axis('off')
+    
+    plt.tight_layout()
+    os.makedirs('images', exist_ok=True)
+    plt.savefig('images/augmentation_examples.png', bbox_inches='tight', dpi=300)
+    plt.close()

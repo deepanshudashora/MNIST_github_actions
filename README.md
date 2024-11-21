@@ -81,16 +81,47 @@ Training Progress: 100%|██████████| 1/1 [00:45<00:00, 45.05s
 Test set: Average loss: 0.0506, Accuracy: 9850/10000 (98.50%)
 
 ```
+
+# Data Augmentation
+
+Here’s the improved and polished version of the README section for better clarity and professionalism:
+
+---
+
+## Data Augmentation
+
+⚠️ **Note**: For visualization purposes, the data augmentation transformations (e.g., angle rotation and center crop) are applied with exaggerated values compared to the actual values used during training. This is done to make the visual differences more noticeable. The original values were too subtle for clear visual representation.
+
+### Visualization Example
+<p align="center">
+  <img src="images/augmentation_examples.png" alt="Data Augmentation Examples">
+</p>
+
+#### Key Differences
+| Transformation       | Training Values                | Visualization Values          |
+|-----------------------|--------------------------------|--------------------------------|
+| **Rotation Angle**   | `-5.0` to `5.0`               | `-10.0` to `10.0`             |
+| **Center Crop Size** | `24x24`                       | `20x20`                       |
+
+The adjustments ensure that the visualization highlights the effects of the transformations clearly. These changes are not used during the actual training process.
+--- 
+
 # Results
 
 ## Sample Output
-![Sample Predictions](images/prediction.png)
+<p align="center">
+  <img src="images/prediction.png" alt="Alt text">
+</p>
 
 ## Misclassified Images
-![Misclassified Images](images/missclassified.png)
+<p align="center">
+  <img src="images/missclassified.png" alt="Alt text">
+</p>
 
 ## Accuracy Report for Each class
-![Class-wise Accuracy](images/accuracy_per_class.png)
+<p align="center">
+  <img src="images/accuracy_per_class.png" alt="Alt text">
+</p>
 
 ```json
 {' zero': 98.77300613496932,
