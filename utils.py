@@ -322,7 +322,7 @@ def save_augmentation_examples(train_transforms, test_data, num_examples=5):
         plt.subplot(num_examples, len(transform_names), idx*len(transform_names) + 1)
         plt.imshow(img.squeeze(), cmap='gray')
         if idx == 0:
-            plt.title('Original', pad=20)
+            plt.title('Original', pad=20,fontsize=20)
         plt.axis('off')
         
         # Apply each transform
@@ -339,7 +339,7 @@ def save_augmentation_examples(train_transforms, test_data, num_examples=5):
             
             plt.imshow(img_show.squeeze(), cmap='gray')
             if idx == 0:
-                plt.title(transform_names[t_idx + 1], pad=20)
+                plt.title(transform_names[t_idx + 1], pad=20,fontsize=20)
             plt.axis('off')
     
     plt.tight_layout()

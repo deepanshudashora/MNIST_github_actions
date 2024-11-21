@@ -83,9 +83,6 @@ Test set: Average loss: 0.0506, Accuracy: 9850/10000 (98.50%)
 ```
 
 # Data Augmentation
-
-Here’s the improved and polished version of the README section for better clarity and professionalism:
-
 ---
 
 ## Data Augmentation
